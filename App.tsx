@@ -103,6 +103,19 @@ const App: React.FC = () => {
     navigator.clipboard.writeText(generateAutoCadPoints());
   };
 
+  const downloadAutoCadFile = () => {
+    const content = generateAutoCadPoints();
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `autocad_points_${params.length}x${params.width}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   const generateTeklaPoints = () => {
     const { length: L, slopeRatio: s, width: W } = params;
     const profile = [
@@ -127,6 +140,19 @@ const App: React.FC = () => {
 
   const copyTeklaToClipboard = () => {
     navigator.clipboard.writeText(generateTeklaPoints());
+  };
+
+  const downloadTeklaFile = () => {
+    const content = generateTeklaPoints();
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `tekla_points_${params.length}x${params.width}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -267,12 +293,20 @@ const App: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <button 
-                onClick={copyToClipboard} 
-                className="text-white bg-blue-600 hover:bg-blue-500 px-4 py-1.5 rounded-lg text-[10px] font-black transition-all active:scale-95"
-              >
-                COPY ALL
-              </button>
+              <div className="flex gap-2">
+                <button 
+                  onClick={copyToClipboard} 
+                  className="text-white bg-blue-600 hover:bg-blue-500 px-3 py-1.5 rounded-lg text-[10px] font-black transition-all active:scale-95"
+                >
+                  COPY
+                </button>
+                <button 
+                  onClick={downloadAutoCadFile} 
+                  className="text-white bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg text-[10px] font-black transition-all active:scale-95 flex items-center gap-1"
+                >
+                  <i className="fas fa-download"></i> .TXT
+                </button>
+              </div>
             </div>
             <textarea 
               readOnly 
@@ -301,12 +335,20 @@ const App: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <button 
-                onClick={copyTeklaToClipboard} 
-                className="text-white bg-emerald-600 hover:bg-emerald-500 px-4 py-1.5 rounded-lg text-[10px] font-black transition-all active:scale-95"
-              >
-                COPY ALL
-              </button>
+              <div className="flex gap-2">
+                <button 
+                  onClick={copyTeklaToClipboard} 
+                  className="text-white bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 rounded-lg text-[10px] font-black transition-all active:scale-95"
+                >
+                  COPY
+                </button>
+                <button 
+                  onClick={downloadTeklaFile} 
+                  className="text-white bg-slate-700 hover:bg-slate-600 px-3 py-1.5 rounded-lg text-[10px] font-black transition-all active:scale-95 flex items-center gap-1"
+                >
+                  <i className="fas fa-download"></i> .TXT
+                </button>
+              </div>
             </div>
             <textarea 
               readOnly 
